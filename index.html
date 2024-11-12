@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrôle du Bot Discord</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .start-btn {
+            background-color: #4CAF50;
+        }
+        .stop-btn {
+            background-color: #E53935;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contrôle du Bot Discord</h1>
+    <button class="start-btn" onclick="controlBot('start')">Démarrer le bot</button>
+    <button class="stop-btn" onclick="controlBot('stop')">Arrêter le bot</button>
+    <p class="message" id="message"></p>
+
+    <script>
+        async function controlBot(action) {
+            try {
+                const response = await fetch("/api/bot-control", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "api-key": "VOTRE_CLE_API"  // Remplacez par votre clé d'API
+                    },
+                    body: JSON.stringify({ action })
+                });
+
+                const data = await response.json();
+                document.getElementById("message").textContent = data.message || data.error;
+            } catch (error) {
+                document.getElementById("message").textContent = "Erreur lors de la communication avec le serveur.";
+            }
+        }
+    </script>
+</body>
+</html>
